@@ -1,0 +1,65 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  box-sizing: border-box;
+
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none !important;
+  color: unset !important;
+}
+
+
+:root {
+  --primary-color: #22A6F2;
+  --white-color: #fff;
+  --text-color: #111;
+
+  --header-color: #333;
+  --round-box: 10px;
+}
+
+html {
+  // font-size: 62.5%;
+}
+
+body {
+  min-height: 100vh;
+  // font-size: 1.6rem;
+}
+
+.MuiFormLabel-root {
+  // font-size: 1.6rem !important;
+
+
+}
+
+.MuiFormControl-root,
+.MuiFormControl-root {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+// input {
+//   width: 100%;
+// }
+
+.main {
+  min-height: 65vh;
+}

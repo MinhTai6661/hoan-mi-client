@@ -1,0 +1,22 @@
+.wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    max-width: 900;
+    padding: 30px;
+    background: #fff;
+
+}
+
+.preview-image {
+    max-width: 50%;
+
+    img {
+        border-radius: 5px;
+        width: 100%;
+    }
+}
