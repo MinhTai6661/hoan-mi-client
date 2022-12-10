@@ -8,7 +8,11 @@ import AccountMenu from "./AccountMenu";
 import { Logout, Person } from "@mui/icons-material";
 import userService from "../../service/userService";
 import { routes } from "../../constants";
-import images from "../../public/image";
+import { images } from "../../public/image";
+import { localService } from "../../service/localService";
+import commons from "../../untils/commons";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // import "./Header.scss";
 
@@ -37,6 +41,14 @@ const menu = [
     },
 ];
 export default function Header() {
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        (async () => {
+            const user = await localService.user.get();
+            setCurrentUser(user);
+        })();
+    }, []);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -71,7 +83,12 @@ export default function Header() {
                         </ul>
                     </nav>
                     <div className={cx("auth")}>
-                        <AccountMenu onLogOut={handleLogout} menuList={menu} userName={"Tai"} />
+                        <AccountMenu
+                            onLogOut={handleLogout}
+                            menuList={menu}
+                            userName={currentUser?.lastName || ""}
+                            avatar={commons.toBase64(currentUser?.image || "")}
+                        />
                     </div>
                 </div>
             </Container>

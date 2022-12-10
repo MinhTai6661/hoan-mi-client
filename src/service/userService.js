@@ -35,7 +35,27 @@ const userService = {
     },
     getAllCodeService: (type) => {
         const path = "/all-code";
+
         return axiosClient.get(path, { params: { type: type } });
+    },
+    getTopDoctor: (limit) => {
+        const path = "/top-doctor-home";
+        return axiosClient.get(path, { params: { limit: limit } });
+    },
+    getAllDoctors: () => {
+        const path = "/get-all-doctors";
+        return axiosClient.get(path);
+    },
+    getCurrentUser: () => {},
+    createDoctorDetail: (data) => {
+        const path = "/create-doctor-detail";
+        console.log("data", data);
+        return axiosClient.post(path, {
+            contentMarkDown: data.contentMarkDown,
+            description: data.description,
+            contentHTML: data.contentHTML,
+            doctorId: data.doctor,
+        });
     },
 };
 

@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import images from "../../public/image";
+import { images } from "../../public/image";
 
 const cx = classNames.bind(styles);
 export default function Footer() {

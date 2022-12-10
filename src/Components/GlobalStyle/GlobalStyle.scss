@@ -23,6 +23,7 @@ video {
 a {
   text-decoration: none !important;
   color: unset !important;
+  transition: 0.2s;
 }
 
 
@@ -30,9 +31,12 @@ a {
   --primary-color: #22A6F2;
   --white-color: #fff;
   --text-color: #111;
+  --text-color-2: #555;
+  --error-color: rgb(168, 4, 4);
 
   --header-color: #333;
   --round-box: 10px;
+  --gray-color-1: #EFEFEF;
 }
 
 html {
@@ -62,4 +66,52 @@ body {
 
 .main {
   min-height: 65vh;
+}
+
+.title-primary {
+  color: var(--primary-color);
+  font-size: 30px;
+  text-align: center;
+  text-transform: capitalize;
+  position: relative;
+
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   width: 20%;
+  //   height: 5px;
+  //   background-color: var(--primary-color);
+  //   top: 100%;
+  //   left: 0;
+  //   border-radius: 5px;
+  // }
+}
+
+//custom dots react slick
+
+.slick-dots li button::before {
+  // display: none !important;
+  content: '';
+  font-family: 'Courier New', Courier, monospace !important;
+  background-color: var(--primary-color) !important;
+  border-radius: 100% !important;
+  width: 10px !important;
+  height: 10px !important;
+  transform-origin: right;
+  transition: 0.2s;
+}
+
+.slick-dots li.slick-active button::before {
+  transform: translateX(-5px);
+  border-radius: 10px !important;
+  width: 20px !important;
+  background-color: var(--primary-color) !important;
+}
+
+.slick-arrow {
+  display: none !important;
+}
+
+.error-message {
+  color: var(--error-color);
 }

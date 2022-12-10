@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+
 import {
     Alert,
     Box,
@@ -20,6 +21,9 @@ import classNames from "classnames/bind";
 import styles from "./AddModal.module.scss";
 import userService from "../../service/userService";
 import Input from "@mui/material/Input";
+import { commons } from "../../untils";
+import { Buffer } from "buffer";
+
 const cx = classNames.bind(styles);
 
 const style = {
@@ -47,6 +51,7 @@ function AdUserModal({
     roles,
 }) {
     const [imagePreview, setImagePreview] = useState("");
+    const [isOpenLightBox, setIsOpenLightBox] = useState(false);
 
     const schema = yup
         .object({
@@ -58,10 +63,16 @@ function AdUserModal({
                 .required("trường này là bắt buộc"),
             password: isAddMode ? yup.string().required("trường này là bắt buộc") : yup.string(),
             address: yup.string().required("trường này là bắt buộc"),
-            phoneNumber: yup.string().required("trường này là bắt buộc"),
+            phoneNumber: yup
+                .string()
+                .matches(
+                    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+                    "Vui lòng nhập đúng định dạng số điện thoại"
+                )
+                .required("trường này là bắt buộc"),
         })
         .required();
-    useEffect(() => {}, []);
+
     const {
         control,
         register,
@@ -82,16 +93,24 @@ function AdUserModal({
         }
     };
 
-    const handleChange = (e, field) => {
+    const handleChange = async (e, field) => {
         const file = e.target.files[0];
-        const url = URL.createObjectURL(file);
-        setImagePreview(url);
-        url.revokeObjectURL(url);
+
+        if (file) {
+            const url = await commons.getBase64(file);
+            setImagePreview(url);
+        }
     };
+
     useEffect(() => {
-        setImagePreview(control._formValues.image ? control._formValues.image : "");
-        console.log(control._formValues.image);
+        const imageBuffer = control._formValues.image;
+
+        if (imageBuffer) {
+            const url = commons.toBase64(control._formValues.image);
+            setImagePreview(url);
+        }
     }, []);
+
     return (
         <div>
             <Modal
@@ -99,8 +118,11 @@ function AdUserModal({
                 onClose={onClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                sx={{
+                    overFlow: "auto",
+                }}
             >
-                <Box className={cx("wrapper")}>
+                <div className={cx("wrapper")}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
@@ -244,7 +266,7 @@ function AdUserModal({
                                                         genders.length > 0 &&
                                                         genders.map((item, index) => (
                                                             <MenuItem
-                                                                value={item.key}
+                                                                value={item.keyMap}
                                                                 key={item.id}
                                                             >
                                                                 {item.valueVi}
@@ -279,7 +301,7 @@ function AdUserModal({
                                                         positions.length > 0 &&
                                                         positions.map((item) => (
                                                             <MenuItem
-                                                                value={item.key}
+                                                                value={item.keyMap}
                                                                 key={item.id}
                                                             >
                                                                 {item.valueVi}
@@ -313,7 +335,7 @@ function AdUserModal({
                                                         roles.length > 0 &&
                                                         roles.map((item) => (
                                                             <MenuItem
-                                                                value={item.key}
+                                                                value={item.keyMap}
                                                                 key={item.id}
                                                             >
                                                                 {item.valueVi}
@@ -330,21 +352,29 @@ function AdUserModal({
                             <Input sx={{ marginTop: 5 }} type="file" onChange={handleChange} />
 
                             {true && (
-                                <div className={cx("preview-image")}>
-                                    <img src={imagePreview} alt="" />
-                                </div>
+                                <div
+                                    onClick={() => setIsOpenLightBox(true)}
+                                    className={cx("preview-image")}
+                                    style={{
+                                        backgroundImage: `url('${imagePreview}')`,
+                                    }}
+                                ></div>
                             )}
+                            <Modal open={isOpenLightBox} onClose={() => setIsOpenLightBox(false)}>
+                                <img className={cx("light-box-image")} src={imagePreview} alt="" />
+                            </Modal>
                         </Grid>
                         {addError && (
                             <Alert sx={{ marginTop: 5 }} severity="error">
                                 {addError}
                             </Alert>
                         )}
-                        <Button fullWidth variant="contained" type="submit" sx={{ marginTop: 5 }}>
+
+                        <Button fullWidth variant="contained" type="submit" xs={{ marginTop: 5 }}>
                             {isAddMode ? "Thêm" : "Cập nhật "} người dùng
                         </Button>
                     </form>
-                </Box>
+                </div>
             </Modal>
         </div>
     );

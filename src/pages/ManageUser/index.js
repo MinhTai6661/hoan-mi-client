@@ -24,6 +24,10 @@ import {
 import utilities from "../../untils/utilities";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import classNames from "classnames/bind";
+import styles from "./AddModal.module.scss";
+
+const cx = classNames.bind(styles);
 
 export default function ManageUser() {
     const dispath = useDispatch();
@@ -43,9 +47,9 @@ export default function ManageUser() {
         password: "",
         address: "",
         phoneNumber: "",
-        gender: genders[0]?.key,
-        positionId: positions[0]?.key,
-        roleId: roles[0]?.key,
+        gender: genders[0]?.keyMap,
+        positionId: positions[0]?.keyMap,
+        roleId: roles[0]?.keyMap,
         image: "",
     };
     const [initialValue, setInitialValue] = useState(initForm);
@@ -117,18 +121,6 @@ export default function ManageUser() {
                 <Button variant="contained" onClick={handleShowModal}>
                     Thêm người dùng
                 </Button>{" "}
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
                 {showModal && (
                     <AdUserModal
                         open={showModal}
@@ -146,6 +138,7 @@ export default function ManageUser() {
                 <Table
                     sx={{ minWidth: 650, maxWidth: "100%", overflow: "auto" }}
                     aria-label="simple table"
+                    className={cx("list-user")}
                 >
                     <TableHead>
                         <TableRow
@@ -159,14 +152,14 @@ export default function ManageUser() {
                             <TableCell>địa chỉ</TableCell>
                             <TableCell>số điện thoại</TableCell>
                             <TableCell>Giới tính</TableCell>
-                            <TableCell>chức vụ</TableCell>
+                            <TableCell>Vị trí</TableCell>
                             <TableCell>Vai trò</TableCell>
-                            <TableCell> </TableCell>
+                            <TableCell>Chức năng </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users &&
-                            users.length &&
+                            users.length > 0 &&
                             users.map((row, index) => (
                                 <TableRow
                                     key={row.id}
@@ -187,10 +180,10 @@ export default function ManageUser() {
                                         {utilities.getCodeById(genders, row.gender)}
                                     </TableCell>
                                     <TableCell>
-                                        {utilities.getCodeById(roles, row.roleId)}
+                                        {utilities.getCodeById(positions, row.positionId)}
                                     </TableCell>
                                     <TableCell>
-                                        {utilities.getCodeById(positions, row.positionId)}
+                                        {utilities.getCodeById(roles, row.roleId)}
                                     </TableCell>
                                     <TableCell>
                                         <EditIcon

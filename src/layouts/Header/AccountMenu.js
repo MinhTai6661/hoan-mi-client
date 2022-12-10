@@ -13,7 +13,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 
-export default function AccountMenu({ menuList, onLogOut, userName }) {
+export default function AccountMenu({ menuList, onLogOut, userName, avatar }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -40,8 +40,8 @@ export default function AccountMenu({ menuList, onLogOut, userName }) {
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }}>
-                            {userName[0]}
+                        <Avatar sx={{ width: 32, height: 32 }} src={avatar}>
+                            {userName[0]?.toUpperCase()}
                         </Avatar>
                     </IconButton>
                 </Tooltip>

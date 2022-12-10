@@ -1,0 +1,35 @@
+.wrapper {
+    background-color: var(--white-color);
+
+}
+
+.reward-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 50px;
+
+    .item {
+        padding: 0 15px;
+
+        img {
+            max-height: 145px;
+            height: 100%;
+        }
+    }
+}
+
+.btn-list {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    position: relative;
+    transform: translateY(50%);
+
+
+    .btn {
+        max-width: 350px;
+        width: 100%;
+        font-size: 25px;
+    }
+}
