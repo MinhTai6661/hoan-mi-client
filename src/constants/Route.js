@@ -1,7 +1,12 @@
 const route = {
     HOME: "/",
-    MANAGE_USER: "/manage-user",
+
+    MANAGE: "/manage",
+    MANAGE_USER: "user",
+    MANAGE_ARTICLE: "article",
+    MANAGE_SCHEDULE: "schedule",
+    DOCTOR_DETAIL: "/doctor",
+
     LOGIN: "/login",
-    MANAGE_ARTICLE: "/manage-article",
 };
 export default route;

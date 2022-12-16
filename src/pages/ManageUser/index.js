@@ -26,6 +26,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classNames from "classnames/bind";
 import styles from "./AddModal.module.scss";
+import Loading from "../../Components/Loading";
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,7 @@ export default function ManageUser() {
     const positions = useSelector((state) => state.manageUser.positionList);
     const roles = useSelector((state) => state.manageUser.roleList);
     const users = useSelector((state) => state.manageUser.userList);
+    const isLoading = useSelector((state) => state.manageUser.allUserLoading);
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
     const [isAddMode, setIsAddMode] = useState(true);
@@ -53,12 +55,6 @@ export default function ManageUser() {
         image: "",
     };
     const [initialValue, setInitialValue] = useState(initForm);
-    useEffect(() => {
-        dispath(fetchAllGender());
-        dispath(fetchAllPosition());
-        dispath(fetchAllRole());
-        dispath(fetchAllUser());
-    }, []);
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -70,7 +66,6 @@ export default function ManageUser() {
     };
 
     const handleAddUser = async (data, reset) => {
-        console.log("handleAddUser  data", data);
         const res = await userService.addUser(data);
 
         if (res.data.errorCode !== 0) {
@@ -91,7 +86,6 @@ export default function ManageUser() {
         dispath(fetchAllUser());
     };
     const handleEditUser = async (data, reset) => {
-        console.log("handleEditUser  data", data);
         const res = await userService.editUser(data);
         if (res.data.message.errorCode !== 0) {
             toast.error("Có lỗi xảy ra");
@@ -105,7 +99,6 @@ export default function ManageUser() {
 
     const handleClickEdit = async (id) => {
         const currentUser = await userService.getUser(id);
-        console.log("handleClickEdit  currentUser.data", currentUser.data);
         if (currentUser.data.erorrCode !== 0) {
             toast.success("người dùng không tồn tại");
         } else {
@@ -204,6 +197,7 @@ export default function ManageUser() {
                             ))}
                     </TableBody>
                 </Table>
+                {isLoading && <Loading />}
             </TableContainer>
         </>
     );

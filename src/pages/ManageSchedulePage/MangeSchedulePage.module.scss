@@ -1,0 +1,28 @@
+.date-picker {
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+
+.schedules-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+
+    .schedule-item {
+        display: block;
+        background-color: transparent;
+        border: 2px solid var(--primary-color);
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.active {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+    }
+}

@@ -7,7 +7,7 @@ import CarouselItem from "./CarouselItem";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 const cx = classNames.bind(styles);
-function Carousel({ list }) {
+function Carousel({ list, onClick }) {
     const carouselRef = useRef(null);
 
     const settings = {
@@ -52,7 +52,16 @@ function Carousel({ list }) {
                 <ArrowBackIosOutlinedIcon className={cx("icon")} />
             </span>
             <Slider {...settings} ref={carouselRef}>
-                {list && list.length > 0 && list.map((item) => <CarouselItem item={item} />)}
+                {list &&
+                    list.length > 0 &&
+                    list.map((item) => (
+                        <CarouselItem
+                            onClick={() => {
+                                onClick(item);
+                            }}
+                            item={item}
+                        />
+                    ))}
             </Slider>
             <span
                 className={cx("btn-next")}
@@ -66,6 +75,8 @@ function Carousel({ list }) {
     );
 }
 
-Carousel.propTypes = {};
+Carousel.propTypes = {
+    onClick: PropTypes.func,
+};
 
 export default Carousel;

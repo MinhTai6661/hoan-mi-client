@@ -1,1 +1,3 @@
 create a menu of manage pages
+
+optimize code: lazyload, usecallback+memo

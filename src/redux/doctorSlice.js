@@ -7,6 +7,7 @@ const doctorSlice = createSlice({
     initialState: {
         topDoctorList: [],
         allDoctor: [],
+        allSchedules: [],
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -18,6 +19,10 @@ const doctorSlice = createSlice({
             state.allDoctor = action.payload;
             // console.log(object);
         });
+        builder.addCase(fetchAllSchedules.fulfilled, (state, action) => {
+            state.allSchedules = action.payload;
+            // console.log(object);
+        });
     },
 });
 
@@ -27,6 +32,11 @@ export const fetchTopDoctor = createAsyncThunk("mageUser/fetchTopDoctor", async 
 });
 export const fetchAllDoctor = createAsyncThunk("mageUser/fetchAllDoctor", async () => {
     const res = await userService.getAllDoctors();
+    return res.data.data;
+});
+
+export const fetchAllSchedules = createAsyncThunk("mageUser/fetchAllSchedules", async (user) => {
+    const res = await userService.getAllCodeService("TIME");
     return res.data.data;
 });
 

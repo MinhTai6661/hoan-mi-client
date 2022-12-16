@@ -9,12 +9,10 @@ const userService = {
     },
     createNewUser: {},
     login: (user) => {
-        console.log("user", user);
         const path = "/login";
         return axiosClient.post(path, user);
     },
     logout: () => {
-        console.log("hi");
         localService.user.remove();
     },
     addUser: (user) => {
@@ -46,16 +44,36 @@ const userService = {
         const path = "/get-all-doctors";
         return axiosClient.get(path);
     },
-    getCurrentUser: () => {},
+    getDoctor: (id) => {
+        const path = "/get-doctor-detail";
+        return axiosClient.get(path, { params: { id: id } });
+    },
     createDoctorDetail: (data) => {
         const path = "/create-doctor-detail";
-        console.log("data", data);
         return axiosClient.post(path, {
             contentMarkDown: data.contentMarkDown,
             description: data.description,
             contentHTML: data.contentHTML,
             doctorId: data.doctor,
         });
+    },
+    editDoctorArticle: (data) => {
+        const path = "/update-doctor";
+
+        return axiosClient.put(path, {
+            doctorId: data.doctor,
+            contentHTML: data.contentHTML,
+            contentMarkDown: data.contentMarkDown,
+            description: data.description,
+        });
+    },
+    createDoctorSchedule: (data) => {
+        const path = "/create-doctor-schedule";
+        return axiosClient.post(path, data);
+    },
+    getSchedulesList: (doctorId, date) => {
+        const path = "/get-doctor-schedules";
+        return axiosClient.get(path, { params: { doctorId, date } });
     },
 };
 

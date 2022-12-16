@@ -9,16 +9,19 @@ const manageUserSlice = createSlice({
         positionList: [],
         roleList: [],
         userList: [],
+        allUserLoading: false,
     },
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(fetchAllGender.pending, (state, action) => {
+            state.allUserLoading = true;
+        });
         builder.addCase(fetchAllGender.fulfilled, (state, action) => {
+            state.allUserLoading = false;
             state.genderList = action.payload;
-            // console.log(object);
         });
         builder.addCase(fetchAllPosition.fulfilled, (state, action) => {
             state.positionList = action.payload;
-            // console.log(object);
         });
         builder.addCase(fetchAllRole.fulfilled, (state, action) => {
             state.roleList = action.payload;

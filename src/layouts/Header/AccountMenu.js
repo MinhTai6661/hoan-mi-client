@@ -12,8 +12,12 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
+import LoginIcon from "@mui/icons-material/Login";
 
-export default function AccountMenu({ menuList, onLogOut, userName, avatar }) {
+export default function AccountMenu({ menuList, onLogOut, currentUser }) {
+    const userName = currentUser?.lastName || "";
+    const avatar = currentUser?.avatar || "";
+    console.log("AccountMenu  currentUser", currentUser);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -35,7 +39,7 @@ export default function AccountMenu({ menuList, onLogOut, userName, avatar }) {
                     <IconButton
                         onClick={handleClick}
                         size="small"
-                        sx={{ ml: 2 }}
+                        sx={{ marginLeft: 2 }}
                         aria-controls={open ? "account-menu" : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
@@ -93,10 +97,19 @@ export default function AccountMenu({ menuList, onLogOut, userName, avatar }) {
                         </Link>
                     ))}
                 <MenuItem onClick={onLogOut}>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Đăng xuất
+                    {menuList && menuList.length ? (
+                        <>
+                            {" "}
+                            <ListItemIcon>
+                                <Logout fontSize="small" />
+                            </ListItemIcon>
+                            Đăng xuất
+                        </>
+                    ) : (
+                        <>
+                            <LoginIcon /> Đăng nhập
+                        </>
+                    )}
                 </MenuItem>
             </Menu>
         </React.Fragment>

@@ -6,13 +6,12 @@ import { images } from "../../public/image";
 import { commons } from "../../untils";
 
 const cx = classNames.bind(styles);
-function CarouselItem({ item }) {
-    console.log("CarouselItem  item", item);
+function CarouselItem({ item, onClick }) {
     const fullName = item?.firstName + item?.lastName;
     const position = item?.positionData?.valueVi;
     const url = commons.toBase64(item?.image);
     return (
-        <div className={cx("item")}>
+        <div className={cx("item")} onClick={onClick}>
             <div className={cx("inner")}>
                 <div className={cx("avatar")}>
                     <img src={url} alt="" />

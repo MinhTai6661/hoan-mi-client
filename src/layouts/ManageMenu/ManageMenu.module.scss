@@ -1,0 +1,33 @@
+.wrapper {
+    background-color: var(--primary-color);
+    margin-bottom: 50px;
+
+}
+
+.list {
+    display: flex;
+    list-style: none;
+}
+
+.item {
+    font-size: 18px;
+    font-weight: 600;
+
+
+
+
+}
+
+.link {
+    padding: 20px;
+    display: block;
+
+
+    &:hover {
+        color: var(--white-color);
+    }
+
+    &.active {
+        color: var(--white-color);
+    }
+}

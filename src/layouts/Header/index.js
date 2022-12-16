@@ -13,42 +13,37 @@ import { localService } from "../../service/localService";
 import commons from "../../untils/commons";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "../../redux/authSlice";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { role } from "../../constants";
+import * as menuRole from "./../menuRoles";
 
 // import "./Header.scss";
 
 const cx = classNames.bind(styles);
 
-const menu = [
-    {
-        title: "hồ sơ cá nhân",
-        to: routes.HOME,
-        icon: <Avatar />,
-    },
-    {
-        title: "Tài khoản",
-        to: "/",
-        icon: <Avatar />,
-        isDivide: true,
-    },
-    {
-        title: "quản lý người dùng",
-        to: routes.MANAGE_USER,
-        icon: (
-            <ListItemIcon>
-                <Person fontSize="small" />
-            </ListItemIcon>
-        ),
-    },
-];
 export default function Header() {
-    const [currentUser, setCurrentUser] = useState({});
+    const currentUser = useSelector((state) => state.auth.currentUser);
+    const dispatch = useDispatch();
+    const [menu, setMenu] = useState([]);
 
     useEffect(() => {
-        (async () => {
-            const user = await localService.user.get();
-            setCurrentUser(user);
-        })();
+        dispatch(fetchCurrentUser());
     }, []);
+    useEffect(() => {
+        if (currentUser.roleId === role.DOCTOR) {
+            setMenu(menuRole.doctorMenu);
+            return;
+        }
+        if (currentUser.roleId === role.MANANGER) {
+            setMenu(menuRole.managerMenu);
+            return;
+        }
+        if (currentUser.roleId === role.PATIENT) {
+            setMenu(menuRole.patientMenu);
+        }
+    }, [currentUser]);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -62,6 +57,7 @@ export default function Header() {
         userService.logout();
         navigate("/login");
     };
+
     return (
         <header className={cx("wrapper")}>
             <Container>
@@ -88,6 +84,7 @@ export default function Header() {
                             menuList={menu}
                             userName={currentUser?.lastName || ""}
                             avatar={commons.toBase64(currentUser?.image || "")}
+                            currentUser={currentUser || ""}
                         />
                     </div>
                 </div>

@@ -1,20 +1,18 @@
-import { Button, Grid, TextareaAutosize } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import MdEditor from "react-markdown-editor-lite";
-import MarkdownIt from "markdown-it";
-import "react-markdown-editor-lite/lib/index.css";
-import styles from "./ManageArticle.module.scss";
-import classNames from "classnames/bind";
-import { useSelect } from "@mui/base";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAllDoctor } from "../../redux/doctorSlice";
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { all } from "axios";
-import userService from "../../service/userService";
+import { Button, Grid, TextareaAutosize } from "@mui/material";
+import classNames from "classnames/bind";
+import MarkdownIt from "markdown-it";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import MdEditor from "react-markdown-editor-lite";
+import "react-markdown-editor-lite/lib/index.css";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
 import { toast } from "react-toastify";
+import * as yup from "yup";
+import userService from "../../service/userService";
+import styles from "./ManageArticle.module.scss";
+
 const cx = classNames.bind(styles);
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -38,16 +36,20 @@ export default function ManageArticle() {
     const [markDownText, setMarkDownText] = useState("");
     const [markDownHtml, setMarkDownHtml] = useState("");
     const [markDownError, setMarkDownError] = useState("");
+    const [isAddMode, setIsAddMode] = useState(false);
+    const [defaultValues, setDefaultValues] = useState({});
     const {
         control,
         register,
+        setValue,
         handleSubmit,
         formState: { errors },
         reset,
     } = useForm({
-        defaultValues: {},
+        defaultValues: defaultValues,
         resolver: yupResolver(schema),
     });
+    // control._formValues.doctor = 6;
     const handleEditorChange = (value) => {
         setMarkDownText(value.text);
         setMarkDownHtml(value.html);
@@ -58,9 +60,7 @@ export default function ManageArticle() {
             return { value: +item.id, label: fullName };
         });
     };
-    useEffect(() => {
-        dispatch(fetchAllDoctor());
-    }, []);
+
     const onSubmit = async (data) => {
         if (!markDownText) {
             setMarkDownError("vui lòng nhập bài viết");
@@ -68,15 +68,45 @@ export default function ManageArticle() {
         }
         data.contentMarkDown = markDownText;
         data.contentHTML = markDownHtml;
-        console.log("onSubmit  data", data);
-
-        const res = await userService.createDoctorDetail(data);
-        console.log("onSubmit  res", res);
-        if (res.data.errorCode === 0) {
-            toast.success("Thêm bài viết thành công");
-        } else {
-            toast.error("Có lỗi xảy ra, không thể thêm bài viết");
+        if (isAddMode) {
+            const res = await userService.createDoctorDetail(data);
+            if (res.data.errorCode === 0) {
+                toast.success("Thêm bài viết thành công");
+                setIsAddMode(false);
+            } else {
+                toast.error("Có lỗi xảy ra, không thể thêm bài viết");
+            }
+            return;
         }
+        const res = await userService.editDoctorArticle(data);
+        if (res.data.errorCode === 0) {
+            toast.success("Sửa bài viết thành công");
+        } else {
+            toast.error("Có lỗi xảy ra, không thể sửa bài viết");
+        }
+        return;
+    };
+    const handleChangeDropdown = (doctorId, onChange) => {
+        onChange(doctorId);
+
+        (async () => {
+            const res = await userService.getDoctor(doctorId);
+            if (res.data.errorCode !== 0) {
+                toast.error("có lỗi xảy ra");
+                return;
+            }
+            if (res.data.data.MarkDown.id) {
+                toast.info("bác sĩ đã có bài viết hãy sửa thông tin bài viết");
+
+                setValue("description", res.data.data.MarkDown.description);
+                setMarkDownText(res.data.data.MarkDown.contentMarkDown);
+                setIsAddMode(false);
+            } else {
+                setIsAddMode(true);
+                setValue("description", "");
+                setMarkDownText("");
+            }
+        })();
     };
     return (
         <form className={cx("wrapper")} onSubmit={handleSubmit(onSubmit)}>
@@ -93,7 +123,7 @@ export default function ManageArticle() {
                                 // {...field}
 
                                 onChange={(e) => {
-                                    onChange(e.value);
+                                    handleChangeDropdown(e.value, onChange);
                                 }}
                             />
                         )}
@@ -137,8 +167,13 @@ export default function ManageArticle() {
                 </Grid>
             </Grid>
 
-            <Button type="submit" variant="contained" fullWidth>
-                Thêm thông tin
+            <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                color={!isAddMode ? "success" : "primary"}
+            >
+                {!isAddMode ? "Sửa" : "Thêm"} thông tin
             </Button>
         </form>
     );

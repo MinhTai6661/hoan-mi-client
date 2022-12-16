@@ -29,7 +29,7 @@ function Introduce(props) {
                                 toàn lãnh thổ Việt Nam. Hệ thống chăm sóc sức khỏe của chúng tôi bao
                                 gồm hơn 2.800 giường bệnh hoạt động trên khắp
                                 <strong> 15 bệnh viện</strong> và
-                                <stong>6 phòng khám.</stong>
+                                <strong>6 phòng khám.</strong>
                             </p>
                             <Button fill upperCase className={cx("btn")}>
                                 {" "}

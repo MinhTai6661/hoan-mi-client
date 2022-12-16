@@ -1,15 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
 
-* {
+* {}
+
+*:not(article *) {
   margin: 0;
   padding: 0;
   font: inherit;
   box-sizing: border-box;
 
+}
+
+article {
+  overflow-wrap: break-word;
+
+  * {
+    font-family: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+
+  h5 {
+    font-size: 16px;
+  }
 }
 
 img,
@@ -21,8 +61,8 @@ video {
 }
 
 a {
-  text-decoration: none !important;
-  color: unset !important;
+  text-decoration: none;
+  color: unset;
   transition: 0.2s;
 }
 
@@ -31,16 +71,22 @@ a {
   --primary-color: #22A6F2;
   --white-color: #fff;
   --text-color: #111;
+
+
   --text-color-2: #555;
   --error-color: rgb(168, 4, 4);
 
   --header-color: #333;
   --round-box: 10px;
   --gray-color-1: #EFEFEF;
+
+  --box-shadow: 0px 0px 5px 1px rgb(192, 192, 192);
 }
 
 html {
   // font-size: 62.5%;
+  font-family: 'DM Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -50,8 +96,6 @@ body {
 
 .MuiFormLabel-root {
   // font-size: 1.6rem !important;
-
-
 }
 
 .MuiFormControl-root,

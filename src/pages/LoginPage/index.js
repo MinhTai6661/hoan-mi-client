@@ -13,7 +13,6 @@ export default function LoginPage() {
             if (res.data.errorCode !== 0) {
                 setError(res.data.errorMessage);
             } else {
-                console.log("ok");
                 await localService.user.set(res.data.user);
                 navigate("/");
             }
@@ -23,7 +22,6 @@ export default function LoginPage() {
     return (
         <>
             <LoginForm submit={handleLogin} errorMess={error} />
-    
         </>
     );
 }
