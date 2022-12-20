@@ -17,7 +17,6 @@ import LoginIcon from "@mui/icons-material/Login";
 export default function AccountMenu({ menuList, onLogOut, currentUser }) {
     const userName = currentUser?.lastName || "";
     const avatar = currentUser?.avatar || "";
-    console.log("AccountMenu  currentUser", currentUser);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {

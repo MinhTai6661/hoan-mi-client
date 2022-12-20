@@ -15,6 +15,8 @@ import moment from "moment";
 import { format } from "../../constants";
 import Schedules from "../../Components/Schedules";
 import SchedulesBooking from "../../Components/SchedulesBooking";
+import BookingModal from "../../Components/BookingModal";
+import DoctorInfo from "../../Components/DoctorInfo";
 
 const cx = classNames.bind(styles);
 
@@ -24,8 +26,7 @@ export default function DoctorDetail() {
     const allSchedules = useSelector((state) => state.manageDoctor.allSchedules);
 
     const [doctor, setDoctor] = useState();
-    const [schedulesList, setSchedulesList] = useState([]);
-    console.log("DoctorDetail  schedulesList", schedulesList);
+    const [showModal, setShowModal] = useState(false);
 
     //normal data
     const fullName = `${doctor?.firstName} ${doctor?.lastName}`;
@@ -38,29 +39,16 @@ export default function DoctorDetail() {
     useEffect(() => {
         (async () => {
             const res = await useService.getDoctor(currentUserId);
-
             if (res.data.errorCode !== 0) {
                 toast.error("bác sĩ không tồn tại");
                 return;
             }
-
             setDoctor(res.data.data);
-
-            const currentSchedulesList = await userService.getSchedulesList(
-                res.data.data.id,
-                new Date(moment().format(format.time.TO_SERVER)).getTime()
-            );
-            const currentSchedulesArr = currentSchedulesList.data.data.map((item) => {
-                return item.timeType;
-            });
-
-            const list = allSchedules.filter((item) => currentSchedulesArr.includes(item.keyMap));
-            setSchedulesList(list);
         })();
-    }, [currentUserId, allSchedules]);
+    }, [currentUserId]);
 
-    const handleChangeSchedule = (item) => {
-        console.log(item);
+    const handleBooking = (value) => {
+        // console.log(value);
     };
 
     useEffect(() => {
@@ -69,32 +57,15 @@ export default function DoctorDetail() {
     return (
         <div className={cx("wrapper")}>
             <Container>
-                <section className={cx("introduce")}>
-                    <Grid container>
-                        <Grid item xs={12} md={2}>
-                            <div className={cx("avatar")}>
-                                <img src={urlImage} alt="" />
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} md={10}>
-                            <div className={cx("doctor-info")}>
-                                <h3 className={cx("title")}>
-                                    {position} {fullName}
-                                </h3>
-                                <p className={cx("desction")}>{description}</p>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </section>
+                <DoctorInfo info={doctor} />
                 <section className={cx("medical-exam-info")}>
                     <Grid container>
                         <Grid item>
                             <div className={cx("schedule")}>
-                                {/* <Schedules
-                                    allSchedules={schedulesList}
-                                    onChange={handleChangeSchedule}
-                                /> */}
-                                <SchedulesBooking doctorId={doctor?.id} />
+                                <SchedulesBooking
+                                    doctorId={doctor?.id}
+                                    // onSubmit={(value) => handleBooking(value)}
+                                />
                             </div>
                         </Grid>
                         <Grid item>

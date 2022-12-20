@@ -1,6 +1,6 @@
 const format = {
     time: {
-        TO_SERVER: "YYYY-MM-DD ",
+        TO_SERVER: "YYYY-MM-DD",
     },
 };
 

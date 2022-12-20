@@ -13,22 +13,26 @@ import { array } from "yup";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import localization from "moment/locale/vi";
+import utilities from "../../untils/utilities";
+import commons from "../../untils/commons";
+import BookingModal from "../BookingModal";
 
 const cx = classNames.bind(styles);
 
 function SchedulesBooking({ doctorId, onSubmit }) {
     const allSchedules = useSelector((state) => state.manageDoctor.allSchedules);
     const [date, setDate] = useState(1);
-    console.log("SchedulesBooking  date", date);
     const [currentSchedules, setCurrentSchedules] = useState([]);
     const [daysList, setDaysList] = useState([]);
     const [availableSchedule, setAvaiableSchedule] = useState();
     const [selectedSechedule, setSelectedSechedule] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
+    // get avaiable schedules
     useEffect(() => {
         (async () => {
-            const res = await userService.getSchedulesList(doctorId, date);
-            console.log("res", res);
+            const formatedDate = new Date(moment(date).format(format.time.TO_SERVER)).getTime();
+            const res = await userService.getSchedulesList(doctorId, commons.toUnix(date));
             if (doctorId && date && res.data.errorCode !== 0) {
                 toast.warning("có lỗi xảy ra");
                 return;
@@ -48,6 +52,7 @@ function SchedulesBooking({ doctorId, onSubmit }) {
         })();
     }, [date, allSchedules]);
 
+    //get 7 days from today
     useEffect(() => {
         const arrayDays = Array(7)
             .fill(null)
@@ -57,28 +62,58 @@ function SchedulesBooking({ doctorId, onSubmit }) {
                     value: moment(new Date()).add(i, "days").startOf("days").valueOf(),
                 };
             });
+        const firstDate = arrayDays[0].label;
+        const dateName = firstDate.slice(0, firstDate.indexOf("-") - 1);
+        const replace = firstDate.replace(dateName, "hôm nay");
+
+        arrayDays[0].label = replace;
         setDaysList(arrayDays);
         setDate(arrayDays[0].value);
     }, []);
 
-    const handleChangeDate = (value) => {
-        console.log("handleChangeDate  value", value.target.value);
-        setDate(value.target.value);
+    const handleChangeDate = (e) => {
+        setDate(e.target.value);
     };
-
     const handleScheduleChange = (value) => {
         setSelectedSechedule(value);
     };
 
-    const handleSubmit = () => {
+    const handleOpenModal = () => {
         if (selectedSechedule) {
-            console.log(doctorId, selectedSechedule);
+            setShowModal(true);
+            onSubmit({
+                doctorId,
+                selectedSechedule,
+            });
             return;
         }
         toast.info("vui lòng chọn lịch khám");
     };
+
+    const handleSubmit = async (req) => {
+        const res = await userService.createSApoiment(req);
+        if (res && res.data.errorCode === 2) {
+            toast.info("bạn đã có một lịch khám trước đó, vui lòng xem lại lịch khám của bạn");
+            return;
+        }
+        if (res && res.data.errorCode !== 0) {
+            toast.info("có lỗi xảy ra !");
+            return;
+        }
+        toast.success("Thêm lịch khám thành công, cảm ơn bạn đã tin tưởng chúng tôi");
+        // setShowModal(false);
+    };
     return (
         <div className={cx("wrapper")}>
+            {showModal && (
+                <BookingModal
+                    open={showModal}
+                    onClose={() => setShowModal(false)}
+                    scheduleTime={{ selectedSechedule, date }}
+                    doctorId={doctorId}
+                    onSubmitCallBack={handleSubmit}
+                />
+            )}
             <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
@@ -102,8 +137,7 @@ function SchedulesBooking({ doctorId, onSubmit }) {
             ) : (
                 <Alert severity="info">Chưa có lịch khám, vui lòng chọn ngày khác</Alert>
             )}
-            <Button onClick={handleSubmit} variant="contained">
-                {" "}
+            <Button onClick={handleOpenModal} variant="contained">
                 Đặt lịch
             </Button>
         </div>
@@ -111,7 +145,7 @@ function SchedulesBooking({ doctorId, onSubmit }) {
 }
 
 SchedulesBooking.propTypes = {
-    // onChange: PropTypes.func,
+    doctorId: PropTypes.number.isRequired,
 };
 
 export default SchedulesBooking;

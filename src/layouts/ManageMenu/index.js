@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 export default function ManageMenu() {
     const currentUser = useSelector((state) => state.auth.currentUser);
     const [menu, setMenu] = useState([]);
-    console.log("ManageMenu  menu", menu);
     useEffect(() => {
         if (currentUser.roleId === role.DOCTOR) {
             setMenu(manageMenuRoles.doctorMenu);

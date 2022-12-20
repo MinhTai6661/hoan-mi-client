@@ -1,0 +1,24 @@
+.schedules-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+
+    .schedule-item {
+        display: block;
+        background-color: transparent;
+        border: 2px solid var(--primary-color);
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.active {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+    }
+}
+
+.form {
+    margin: 20px 0;
+}

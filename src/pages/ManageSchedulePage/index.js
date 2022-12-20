@@ -58,6 +58,8 @@ export default function ManageSchedulesPage() {
                 timeType: item,
             };
         });
+
+        const da = new Date(moment(currentDate).format(format.time.TO_SERVER));
         const res = await userService.createDoctorSchedule({
             schedules: result,
         });
@@ -71,7 +73,6 @@ export default function ManageSchedulesPage() {
                 currentDoctor,
                 new Date(moment(currentDate).format(format.time.TO_SERVER)).getTime()
             );
-            console.log("currentSchedulesList", currentSchedulesList.data.data);
             const currentSchedulesArr = currentSchedulesList.data.data.map((item) => {
                 return item.timeType;
             });

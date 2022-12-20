@@ -75,6 +75,10 @@ const userService = {
         const path = "/get-doctor-schedules";
         return axiosClient.get(path, { params: { doctorId, date } });
     },
+    createSApoiment: (req) => {
+        const path = "/create-apoinment";
+        return axiosClient.post(path, req);
+    },
 };
 
 export default userService;

@@ -11,6 +11,7 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import userService from "../../service/userService";
+import { commons } from "../../untils";
 import styles from "./ManageArticle.module.scss";
 
 const cx = classNames.bind(styles);
@@ -118,8 +119,9 @@ export default function ManageArticle() {
                         control={control}
                         render={({ field: { onChange } }) => (
                             <Select
-                                options={renderOptions(allDoctors)}
+                                options={commons.renderListDoctorsDropDown(allDoctors)}
                                 id="select-doctor"
+                                placeholder="chọn bác sĩ"
                                 // {...field}
 
                                 onChange={(e) => {
@@ -132,6 +134,7 @@ export default function ManageArticle() {
                         <span className="error-message">{errors.doctor.message}</span>
                     )}
                 </Grid>
+
                 <Grid item xs={12} lg={7}>
                     <label htmlFor="doctor-desciption">Mô tả</label>
                     <Controller
@@ -150,10 +153,12 @@ export default function ManageArticle() {
                             />
                         )}
                     />
+
                     {errors.description && (
                         <span className="error-message">{errors.description.message}</span>
                     )}
                 </Grid>
+
                 <Grid item xs={12}>
                     <label htmlFor="select-doctor">Bài viết</label>
 
@@ -162,6 +167,7 @@ export default function ManageArticle() {
                         value={markDownText}
                         renderHTML={(text) => mdParser.render(text)}
                         onChange={handleEditorChange}
+                        placeholder="Nhập bài viết bác sĩ ...."
                     />
                     {!markDownText && <span className="error-message">{markDownError}</span>}
                 </Grid>

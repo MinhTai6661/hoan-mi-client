@@ -9,12 +9,8 @@ import ManageMenu from "../../layouts/ManageMenu";
 
 export default function ManagePage() {
     const currentRole = useSelector((state) => state.auth.currentUser.roleId);
-    console.log("ManagePage  currentRole", currentRole);
     const navigate = useNavigate();
-    console.log(
-        "ManagePage  role.DOCTOR",
-        (currentRole && role.DOCTOR === currentRole) || role.MANANGER === currentRole
-    );
+
     useEffect(() => {
         // if ((currentRole && currentRole === role.DOCTOR) || currentRole === role.MANANGER) {
         //     console.log("hello");

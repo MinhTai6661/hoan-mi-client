@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Alert,
-    Box,
     Button,
     FormControl,
     Grid,
@@ -12,17 +11,13 @@ import {
     Modal,
     Select,
     TextField,
-    Typography,
 } from "@mui/material";
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames/bind";
-import styles from "./AddModal.module.scss";
-import userService from "../../service/userService";
 import Input from "@mui/material/Input";
+import classNames from "classnames/bind";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
 import { commons } from "../../untils";
-import { Buffer } from "buffer";
+import styles from "./AddModal.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -63,6 +58,7 @@ function AdUserModal({
                 .required("trường này là bắt buộc"),
             password: isAddMode ? yup.string().required("trường này là bắt buộc") : yup.string(),
             address: yup.string().required("trường này là bắt buộc"),
+            gender: yup.string().required("trường này là bắt buộc"),
             phoneNumber: yup
                 .string()
                 .matches(
