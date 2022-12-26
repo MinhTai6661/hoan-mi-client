@@ -18,12 +18,6 @@ const cx = classNames.bind(styles);
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-];
-
 const schema = yup
     .object({
         doctor: yup.number().required("vui lòng chọn bác sĩ"),

@@ -22,6 +22,7 @@ import {
     fetchAllUser,
 } from "./redux/ManageUserSlice";
 import ManageSchedulesPage from "./pages/ManageSchedulePage";
+import VerifyAppoiment from "./pages/VerifyAppointment";
 
 function App() {
     const dispatch = useDispatch();
@@ -68,6 +69,7 @@ function App() {
                         <Route path={routes.MANAGE_SCHEDULE} element={<ManageSchedulesPage />} />
                     </Route>
                     <Route path={`${routes.DOCTOR_DETAIL}/:id`} element={<DoctorDetail />} />
+                    <Route path={routes.VERIFY_APPOINTMENT} element={<VerifyAppoiment />} />
                 </Route>
                 {/* //login */}
                 <Route path={routes.LOGIN} element={<LoginPage />} />

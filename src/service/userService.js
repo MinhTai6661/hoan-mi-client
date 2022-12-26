@@ -79,6 +79,12 @@ const userService = {
         const path = "/create-apoinment";
         return axiosClient.post(path, req);
     },
+    verifyAppointment: ({ doctorId, token }) => {
+        const path = "/verify-appoiment";
+        console.log(" doctorId, token ", doctorId, token);
+
+        return axiosClient.post(path, { doctorId, token });
+    },
 };
 
 export default userService;

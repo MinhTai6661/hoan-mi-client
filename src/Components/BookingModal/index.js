@@ -53,11 +53,13 @@ function BookingModal({
     onSubmitCallBack,
     ...others
 }) {
+    console.log("scheduleTime", scheduleTime);
     const genders = useSelector((state) => state.manageUser.genderList);
     const allDoctors = useSelector((state) => state.manageDoctor.allDoctor);
-    const [birthday, setBirthday] = useState(new Date());
+    const [birthday, setBirthday] = useState("");
 
     const [doctor, setDoctor] = useState("");
+    console.log("doctor", doctor);
 
     const {
         control,
@@ -83,6 +85,8 @@ function BookingModal({
     const onSubmit = (data) => {
         console.log("onSubmit  data", birthday);
         const req = {
+            firstName: data.firstName,
+            lastName: data.lastName,
             doctorId: doctor.id,
             timeType: scheduleTime.selectedSechedule.keyMap,
             date: commons.toUnix(scheduleTime.date),
@@ -93,14 +97,19 @@ function BookingModal({
             reason: data.reason,
             statusId: "S1",
             birthday: commons.toUnix(birthday),
+            doctorName: ` ${doctor.firstName} ${doctor.lastName}`,
+            timeScheduleString: `${scheduleTime.selectedSechedule.valueVi} ${commons.toHumanDate(
+                scheduleTime.date
+            )} `,
+            // timeDateString: commons.toHumanDate(scheduleTime.date),
         };
+
         onSubmitCallBack(req);
     };
 
     useEffect(() => {
         (async () => {
             const res = await userService.getDoctor(doctorId);
-
             setDoctor(res.data.data);
         })();
     }, [doctorId]);
@@ -210,7 +219,9 @@ function BookingModal({
                                 selected={birthday}
                                 onChange={(date) => setBirthday(date)}
                                 value={birthday}
-                                dateFormat={birthday?.toLocaleDateString("vi-VI") || ""}
+                                dateFormat={
+                                    (birthday && birthday?.toLocaleDateString("vi-VI")) || ""
+                                }
                                 scrollableYearDropdown
                                 showFullMonthYearPicker
                                 showYearDropdown
@@ -228,7 +239,6 @@ function BookingModal({
                                 // yearDropdownItemNumber
                                 // yearItemNumber
                             />
-
                             {/* <DatePicker
                                 placeholderText="Ngày sinh"
                                 className={cx("date-picker")}

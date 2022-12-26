@@ -1,0 +1,11 @@
+.message {
+    color: var(--primary-color);
+    font-size: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+    img {
+        margin-top: 50px;
+    }
+}

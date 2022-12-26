@@ -62,10 +62,12 @@ export default function DoctorDetail() {
                     <Grid container>
                         <Grid item>
                             <div className={cx("schedule")}>
-                                <SchedulesBooking
-                                    doctorId={doctor?.id}
-                                    // onSubmit={(value) => handleBooking(value)}
-                                />
+                                {doctor && (
+                                    <SchedulesBooking
+                                        doctorId={doctor?.id}
+                                        // onSubmit={(value) => handleBooking(value)}
+                                    />
+                                )}
                             </div>
                         </Grid>
                         <Grid item>

@@ -19,25 +19,28 @@ import BookingModal from "../BookingModal";
 
 const cx = classNames.bind(styles);
 
-function SchedulesBooking({ doctorId, onSubmit }) {
+function SchedulesBooking({ doctorId, onSubmit = () => {} }) {
     const allSchedules = useSelector((state) => state.manageDoctor.allSchedules);
-    const [date, setDate] = useState(1);
+    const [date, setDate] = useState(new Date());
+    console.log("SchedulesBooking  date", date);
     const [currentSchedules, setCurrentSchedules] = useState([]);
     const [daysList, setDaysList] = useState([]);
-    const [availableSchedule, setAvaiableSchedule] = useState();
+    const [availableSchedule, setAvaiableSchedule] = useState([]);
     const [selectedSechedule, setSelectedSechedule] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
     // get avaiable schedules
     useEffect(() => {
         (async () => {
-            const formatedDate = new Date(moment(date).format(format.time.TO_SERVER)).getTime();
             const res = await userService.getSchedulesList(doctorId, commons.toUnix(date));
             if (doctorId && date && res.data.errorCode !== 0) {
                 toast.warning("có lỗi xảy ra");
                 return;
             }
+            console.log("hellooooooooooooo");
+
             if (res && res?.data?.data && res?.data?.data?.length > 0) {
+                console.log("hellooooooooooooo2");
                 const currentSchedulesArr = res.data.data.map((item) => {
                     return item.timeType;
                 });
@@ -50,7 +53,7 @@ function SchedulesBooking({ doctorId, onSubmit }) {
                 setSelectedSechedule(null);
             }
         })();
-    }, [date, allSchedules]);
+    }, [date, allSchedules, doctorId]);
 
     //get 7 days from today
     useEffect(() => {
@@ -91,12 +94,14 @@ function SchedulesBooking({ doctorId, onSubmit }) {
     };
 
     const handleSubmit = async (req) => {
+        console.log("handleSubmit  req", req);
         const res = await userService.createSApoiment(req);
         if (res && res.data.errorCode === 2) {
             toast.info("bạn đã có một lịch khám trước đó, vui lòng xem lại lịch khám của bạn");
             return;
         }
         if (res && res.data.errorCode !== 0) {
+            console.log("handleSubmit  res.data.errorCode", res.data.errorCode);
             toast.info("có lỗi xảy ra !");
             return;
         }
@@ -126,7 +131,7 @@ function SchedulesBooking({ doctorId, onSubmit }) {
                     daysList.length > 0 &&
                     daysList.map((item) => {
                         return (
-                            <MenuItem value={item?.value}>
+                            <MenuItem value={item?.value} key={item.value}>
                                 <span style={{ textTransform: "capitalize" }}> {item?.label}</span>
                             </MenuItem>
                         );

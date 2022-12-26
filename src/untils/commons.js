@@ -22,8 +22,8 @@ const commons = {
     toUnix: (time) => {
         return new Date(moment(time).format(format.time.TO_SERVER)).getTime();
     },
-    toHumanDate: (time) => {
-        return new Date(moment(time).format(format.time.TO_SERVER));
+    toHumanDate: (time, lang = "vi") => {
+        return moment(time).locale("vi").format("dddd - DD/MM/YYYY");
     },
     renderListGendersDropDown: (list, lang = "vi") => {
         return (

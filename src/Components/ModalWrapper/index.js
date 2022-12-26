@@ -24,9 +24,7 @@ function ModalWrapper({ onClose, open, children }) {
 }
 
 ModalWrapper.propTypes = {
-    onChange: PropTypes.func,
-    allSchedules: PropTypes.array.isRequired,
-    isMultiple: PropTypes.bool,
+    // onChange: PropTypes.func,
 };
 
 export default ModalWrapper;
