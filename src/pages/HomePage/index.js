@@ -1,20 +1,11 @@
-import React, { useEffect } from "react";
 import classNames from "classnames/bind";
-import styles from "./HomePage.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAllDoctor, fetchTopDoctor } from "../../redux/doctorSlice";
+import React from "react";
 import Banner from "../../sections/Banner";
-import Reward from "../../sections/Reward";
 import Introduce from "../../sections/Introduce";
-import SpecialList from "../../sections/SpecialList";
-import Carousel from "../../Components/Carousel";
 import OutstandingDoctor from "../../sections/OutstandingDoctors";
-import {
-    fetchAllGender,
-    fetchAllPosition,
-    fetchAllRole,
-    fetchAllUser,
-} from "../../redux/ManageUserSlice";
+import Reward from "../../sections/Reward";
+import Specialties from "../../sections/Specialties";
+import styles from "./HomePage.module.scss";
 const cx = classNames.bind(styles);
 
 export default function HomePage() {
@@ -23,7 +14,7 @@ export default function HomePage() {
             <Banner />
             <Reward />
             <Introduce />
-            <SpecialList />
+            <Specialties />
             <OutstandingDoctor />
         </div>
     );

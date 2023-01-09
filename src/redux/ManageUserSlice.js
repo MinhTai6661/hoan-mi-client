@@ -9,9 +9,14 @@ const manageUserSlice = createSlice({
         positionList: [],
         roleList: [],
         userList: [],
+        filterdUsers: [],
         allUserLoading: false,
     },
-    reducers: {},
+    reducers: {
+        changeUserList: (state, action) => {
+            state.filterdUsers = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchAllGender.pending, (state, action) => {
             state.allUserLoading = true;
@@ -55,6 +60,7 @@ export const addNewUser = createAsyncThunk("mageUser/addNewUser", async (user) =
     return res.data.data;
 });
 
-const { action, reducer } = manageUserSlice;
+const { actions, reducer } = manageUserSlice;
+export const { changeUserList } = actions;
 
 export default reducer;

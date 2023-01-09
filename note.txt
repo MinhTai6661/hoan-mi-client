@@ -1,3 +1,13 @@
+MAIN-TARGET: LEARN THE WAY OF THINKING
+
+- THINK ABOUT COMPONENTS TREE
+
+
+
 create a menu of manage pages
 
 optimize code: lazyload, usecallback+memo
+
+take manages function to inner manage commponent (nested routing) due to easy to see
+
+fix interface's error when verify appointment (maybe life circle)

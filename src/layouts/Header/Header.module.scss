@@ -1,9 +1,15 @@
 .wrapper {
     display: flex;
-    height: 100px;
+    height: var(--header-height);
     align-items: center;
     // background-color: #333
     box-shadow: 0 1px 5px #999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: var(--white-color);
 
 }
 
@@ -29,9 +35,40 @@
     display: flex;
     column-gap: 20px;
 
+
+
     a {
         color: var(--text-color);
         text-decoration: none;
+        position: relative;
+        display: block;
+
+        &::before {
+            content: '';
+            position: absolute;
+            background-color: var(--primary-color);
+            height: 3px;
+            width: 0;
+            border-radius: 5px;
+            bottom: -5px;
+            z-index: 10;
+            transition: 0.2s;
+            right: 0;
+        }
+
+        &:hover {
+            &::before {
+                left: 0;
+                width: 100%;
+            }
+        }
+
+        &.active {
+            &::before {
+                left: 0;
+                width: 100%;
+            }
+        }
     }
 }
 

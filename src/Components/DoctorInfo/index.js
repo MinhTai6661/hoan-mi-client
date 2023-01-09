@@ -16,12 +16,12 @@ function DoctorInfo({ info, small, scheduleTime }) {
     return (
         <div className={cx("introduce", { small })}>
             <Grid container>
-                <Grid item xs={12} md={small ? 1 : 2}>
+                <Grid item xs={12} md={small ? 2 : 3}>
                     <div className={cx("avatar")}>
                         <img src={urlImage} alt="" />
                     </div>
                 </Grid>
-                <Grid item xs={12} md={small ? 11 : 10}>
+                <Grid item xs={12} md={small ? 10 : 9}>
                     <div className={cx("doctor-info")}>
                         <h3 className={cx("title")}>
                             {position} {fullName}

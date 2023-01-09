@@ -55,6 +55,7 @@ const userService = {
             description: data.description,
             contentHTML: data.contentHTML,
             doctorId: data.doctor,
+            specialty: data.specialty,
         });
     },
     editDoctorArticle: (data) => {
@@ -65,6 +66,7 @@ const userService = {
             contentHTML: data.contentHTML,
             contentMarkDown: data.contentMarkDown,
             description: data.description,
+            specialty: data.specialty,
         });
     },
     createDoctorSchedule: (data) => {
@@ -81,9 +83,52 @@ const userService = {
     },
     verifyAppointment: ({ doctorId, token }) => {
         const path = "/verify-appoiment";
-        console.log(" doctorId, token ", doctorId, token);
-
         return axiosClient.post(path, { doctorId, token });
+    },
+    createSpecialty: (data) => {
+        const path = "/create-specialty";
+        return axiosClient.post(path, {
+            descriptionMarkDown: data.descriptionMarkDown,
+            descriptionHTML: data.descriptionHTML,
+            image: data.image,
+            name: data.name,
+        });
+    },
+    getSpecialties: (params) => {
+        const path = "/get-specialties";
+        return axiosClient.get(path, { params });
+    },
+    getDotorsBySpecialtyId: (specialtyId) => {
+        const path = "/get-doctors-by-specialty";
+        return axiosClient.get(path, { params: { specialtyId } });
+    },
+    getSpecialtyDetail: (specialtyId) => {
+        const path = "/get-specialty-detail";
+        return axiosClient.get(path, { params: { specialtyId: specialtyId } });
+    },
+    getPatientBookings: (params) => {
+        const path = "/get-patient-by-doctor";
+        const { doctorId, date } = params;
+        return axiosClient.get(path, { params: { doctorId: doctorId, date: date } });
+    },
+    confirmScheduleById: (bookingId) => {
+        const path = "/confirm-schedule";
+        console.log("bookingId", bookingId);
+        return axiosClient.post(path, { bookingId: bookingId });
+    },
+    updateSpecialty: (newData) => {
+        const path = "/update-speialty";
+        return axiosClient.put(path, {
+            id: newData.id,
+            name: newData.name,
+            descriptionHTML: newData.descriptionHTML,
+            descriptionMarkDown: newData.descriptionMarkDown,
+            image: newData.image,
+        });
+    },
+    deleteSpecialty: (id) => {
+        const path = `/delete-specialty/${id}`;
+        return axiosClient.delete(path);
     },
 };
 

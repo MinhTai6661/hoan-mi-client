@@ -1,0 +1,19 @@
+.wrapper {
+    article {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+    }
+
+    thead th:last-child {
+        text-align: right;
+    }
+
+    tbody td:last-child {
+        text-align: right !important;
+
+    }
+}

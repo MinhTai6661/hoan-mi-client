@@ -15,6 +15,7 @@ const commons = {
             };
         });
     },
+
     toBase64: (buffer) => {
         const url = new Buffer(buffer, "base64").toString("binary");
         return url;
@@ -44,6 +45,38 @@ const commons = {
                 return { value: +item.id, label: fullName };
             })
         );
+    },
+    renderListSpecialtiesDropDown: (list, lang = "vi") => {
+        return (
+            list &&
+            list.map((item) => {
+                return { value: +item.id, label: item.name };
+            })
+        );
+    },
+    removeAccents(str) {
+        var AccentsMap = [
+            "aàảãáạăằẳẵắặâầẩẫấậ",
+            "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+            "dđ",
+            "DĐ",
+            "eèẻẽéẹêềểễếệ",
+            "EÈẺẼÉẸÊỀỂỄẾỆ",
+            "iìỉĩíị",
+            "IÌỈĨÍỊ",
+            "oòỏõóọôồổỗốộơờởỡớợ",
+            "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+            "uùủũúụưừửữứự",
+            "UÙỦŨÚỤƯỪỬỮỨỰ",
+            "yỳỷỹýỵ",
+            "YỲỶỸÝỴ",
+        ];
+        for (var i = 0; i < AccentsMap.length; i++) {
+            var re = new RegExp("[" + AccentsMap[i].substr(1) + "]", "g");
+            var char = AccentsMap[i][0];
+            str = str.replace(re, char);
+        }
+        return str;
     },
 };
 

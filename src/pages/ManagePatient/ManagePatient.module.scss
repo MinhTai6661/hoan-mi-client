@@ -1,0 +1,26 @@
+.wrapper {
+    padding: 50px;
+
+    label {
+        display: block;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: var(--text-color);
+    }
+
+}
+
+.text-area {
+    width: 100%;
+    resize: none;
+    outline: none;
+    border-color: #888;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+.is-confirm>* {
+    opacity: 0.4;
+}

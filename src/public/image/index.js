@@ -8,6 +8,7 @@ import introduce from "./introduce.jpg";
 import orthopedics from "./orthopedics.svg";
 import error from "./error.svg";
 import success from "./success.svg";
+import empty from "./empty.svg";
 
 export const images = {
     logo,
@@ -19,6 +20,7 @@ export const images = {
     introduce,
     success,
     error,
+    empty,
 };
 
 export const icons = {

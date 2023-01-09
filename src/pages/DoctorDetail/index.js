@@ -54,6 +54,10 @@ export default function DoctorDetail() {
     useEffect(() => {
         articleRef.current.innerHTML = article;
     }, [article]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <div className={cx("wrapper")}>
             <Container>

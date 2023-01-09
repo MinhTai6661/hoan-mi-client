@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentUser } from "../../redux/authSlice";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { role } from "../../constants";
-import * as menuRole from "./../menuRoles";
+import * as menuRole from "./../dropdownRoles";
+import route from "../../constants/Route";
 
 // import "./Header.scss";
 
@@ -40,9 +41,7 @@ export default function Header() {
             setMenu(menuRole.managerMenu);
             return;
         }
-        if (currentUser.roleId === role.PATIENT) {
-            setMenu(menuRole.patientMenu);
-        }
+        setMenu(menuRole.patientMenu);
     }, [currentUser]);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -68,13 +67,28 @@ export default function Header() {
                     <nav className={cx("navbar")}>
                         <ul className={cx("menu-list")}>
                             <li>
-                                <NavLink to="/">Trang chủ</NavLink>
+                                <NavLink
+                                    to={route.HOME}
+                                    className={(nav) => cx("link", { active: nav.isActive })}
+                                >
+                                    Trang chủ
+                                </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/">giới thiệu</NavLink>
+                                <NavLink
+                                    to={route.INTRODUCE}
+                                    className={(nav) => cx("link", { active: nav.isActive })}
+                                >
+                                    giới thiệu
+                                </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/">đặt lịch</NavLink>
+                                <NavLink
+                                    to={route.BOOKING}
+                                    className={(nav) => cx("link", { active: nav.isActive })}
+                                >
+                                    đặt lịch
+                                </NavLink>
                             </li>
                         </ul>
                     </nav>

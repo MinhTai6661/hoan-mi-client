@@ -18,6 +18,7 @@ export default function ManageSchedulesPage() {
     const allDoctors = useSelector((state) => state.manageDoctor.allDoctor);
     const allSchedules = useSelector((state) => state.manageDoctor.allSchedules);
     const [currentDate, setCurrentDate] = useState(new Date());
+
     const [currentDoctor, setCurrentDoctor] = useState(null);
     const [selectedSchedules, setSelectedSchedules] = useState([]);
 
@@ -59,7 +60,6 @@ export default function ManageSchedulesPage() {
             };
         });
 
-        const da = new Date(moment(currentDate).format(format.time.TO_SERVER));
         const res = await userService.createDoctorSchedule({
             schedules: result,
         });

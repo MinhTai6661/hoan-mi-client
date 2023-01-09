@@ -46,7 +46,7 @@
 .bottom {
     display: flex;
     justify-content: space-between;
-    margin-top: 50px;
+    margin-top: var(--section-spacing);
 }
 
 .connect {

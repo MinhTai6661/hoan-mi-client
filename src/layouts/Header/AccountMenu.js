@@ -13,10 +13,11 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
+import commons from "../../untils/commons";
 
 export default function AccountMenu({ menuList, onLogOut, currentUser }) {
     const userName = currentUser?.lastName || "";
-    const avatar = currentUser?.avatar || "";
+    const avatar = commons.toBase64(currentUser?.image || "");
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -44,7 +45,7 @@ export default function AccountMenu({ menuList, onLogOut, currentUser }) {
                         aria-expanded={open ? "true" : undefined}
                     >
                         <Avatar sx={{ width: 32, height: 32 }} src={avatar}>
-                            {userName[0]?.toUpperCase()}
+                            {!avatar && userName[0]?.toUpperCase()}
                         </Avatar>
                     </IconButton>
                 </Tooltip>

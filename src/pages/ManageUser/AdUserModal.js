@@ -18,6 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { commons } from "../../untils";
 import styles from "./AddModal.module.scss";
+import ChooseImage from "../../Components/ChooseImage";
 
 const cx = classNames.bind(styles);
 
@@ -89,13 +90,8 @@ function AdUserModal({
         }
     };
 
-    const handleChange = async (e, field) => {
-        const file = e.target.files[0];
-
-        if (file) {
-            const url = await commons.getBase64(file);
-            setImagePreview(url);
-        }
+    const handleChange = async (image) => {
+        setImagePreview(image);
     };
 
     useEffect(() => {
@@ -345,7 +341,7 @@ function AdUserModal({
                             </Grid>
                         </Grid>
                         <Grid item>
-                            <Input sx={{ marginTop: 5 }} type="file" onChange={handleChange} />
+                            {/* <Input sx={{ marginTop: 5 }} type="file" onChange={handleChange} />
 
                             {true && (
                                 <div
@@ -358,7 +354,9 @@ function AdUserModal({
                             )}
                             <Modal open={isOpenLightBox} onClose={() => setIsOpenLightBox(false)}>
                                 <img className={cx("light-box-image")} src={imagePreview} alt="" />
-                            </Modal>
+                            </Modal> */}
+
+                            <ChooseImage onChange={handleChange} image={imagePreview} />
                         </Grid>
                         {addError && (
                             <Alert sx={{ marginTop: 5 }} severity="error">

@@ -2,12 +2,14 @@ import {
     Alert,
     Button,
     Paper,
+    Stack,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import userService from "../../service/userService";
@@ -16,6 +18,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AdUserModal from "./AdUserModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    changeUserList,
     fetchAllGender,
     fetchAllPosition,
     fetchAllRole,
@@ -27,6 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import classNames from "classnames/bind";
 import styles from "./AddModal.module.scss";
 import Loading from "../../Components/Loading";
+import { commons } from "../../untils";
 
 const cx = classNames.bind(styles);
 
@@ -37,10 +41,12 @@ export default function ManageUser() {
     const positions = useSelector((state) => state.manageUser.positionList);
     const roles = useSelector((state) => state.manageUser.roleList);
     const users = useSelector((state) => state.manageUser.userList);
+    const filterdUsers = useSelector((state) => state.manageUser.filterdUsers);
     const isLoading = useSelector((state) => state.manageUser.allUserLoading);
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
     const [isAddMode, setIsAddMode] = useState(true);
+    const [inputValue, setInputValue] = useState("");
 
     const initForm = {
         firstName: "",
@@ -108,12 +114,46 @@ export default function ManageUser() {
         }
     };
 
+    const handleChangeInputValue = (e) => {
+        let value = e.target.value;
+        setInputValue(value);
+    };
+    const handleSearch = () => {
+        const datacopy = [...users];
+        const filteredUser = datacopy.filter((item) => {
+            let fullName = item.firstName + item.lastName;
+            fullName = commons.removeAccents(fullName.trim().toLowerCase());
+
+            return fullName.includes(commons.removeAccents(inputValue.trim().toLowerCase()));
+        });
+        dispath(changeUserList(filteredUser));
+    };
+
     return (
         <>
+            <Button variant="contained" onClick={handleShowModal} sx={{ mb: 5 }}>
+                Thêm người dùng
+            </Button>
+            <Stack direction="row" spacing={2}>
+                <div className={cx("search")} style={{ width: "100%", flex: 1 }}>
+                    <TextField
+                        label="Tìm kiếm người dùng"
+                        placeholder="Nhập tên người dùng"
+                        value={inputValue}
+                        onChange={handleChangeInputValue}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSearch();
+                            }
+                        }}
+                    />
+                </div>
+                <Button sx={{ flexShrink: 0 }} variant="contained" onClick={handleSearch}>
+                    Tìm Kiếm
+                </Button>
+            </Stack>
+
             <TableContainer component={Paper}>
-                <Button variant="contained" onClick={handleShowModal}>
-                    Thêm người dùng
-                </Button>{" "}
                 {showModal && (
                     <AdUserModal
                         open={showModal}
@@ -152,8 +192,9 @@ export default function ManageUser() {
                     </TableHead>
                     <TableBody>
                         {users &&
+                            filterdUsers &&
                             users.length > 0 &&
-                            users.map((row, index) => (
+                            (filterdUsers.length > 0 ? filterdUsers : users).map((row, index) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{

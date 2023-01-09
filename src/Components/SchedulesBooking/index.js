@@ -22,7 +22,6 @@ const cx = classNames.bind(styles);
 function SchedulesBooking({ doctorId, onSubmit = () => {} }) {
     const allSchedules = useSelector((state) => state.manageDoctor.allSchedules);
     const [date, setDate] = useState(new Date());
-    console.log("SchedulesBooking  date", date);
     const [currentSchedules, setCurrentSchedules] = useState([]);
     const [daysList, setDaysList] = useState([]);
     const [availableSchedule, setAvaiableSchedule] = useState([]);
@@ -37,10 +36,8 @@ function SchedulesBooking({ doctorId, onSubmit = () => {} }) {
                 toast.warning("có lỗi xảy ra");
                 return;
             }
-            console.log("hellooooooooooooo");
 
             if (res && res?.data?.data && res?.data?.data?.length > 0) {
-                console.log("hellooooooooooooo2");
                 const currentSchedulesArr = res.data.data.map((item) => {
                     return item.timeType;
                 });
@@ -94,14 +91,13 @@ function SchedulesBooking({ doctorId, onSubmit = () => {} }) {
     };
 
     const handleSubmit = async (req) => {
-        console.log("handleSubmit  req", req);
         const res = await userService.createSApoiment(req);
+        console.log("handleSubmit  res", res);
         if (res && res.data.errorCode === 2) {
             toast.info("bạn đã có một lịch khám trước đó, vui lòng xem lại lịch khám của bạn");
             return;
         }
         if (res && res.data.errorCode !== 0) {
-            console.log("handleSubmit  res.data.errorCode", res.data.errorCode);
             toast.info("có lỗi xảy ra !");
             return;
         }

@@ -23,19 +23,32 @@ import {
 } from "./redux/ManageUserSlice";
 import ManageSchedulesPage from "./pages/ManageSchedulePage";
 import VerifyAppoiment from "./pages/VerifyAppointment";
+import ManageSpecialty from "./pages/ManageSpecialty";
+import SpecialtyDetail from "./pages/SpecialtyDetail";
+import ManagePatient from "./pages/ManagePatient";
+import { fetchAllSpecialties } from "./redux/manageSpecialtySlice";
+import BookingPage from "./pages/BookingPage";
+import IntroducePage from "./pages/IntroducePage";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTopDoctor(5));
+        dispatch(fetchTopDoctor(10));
         dispatch(fetchAllGender());
         dispatch(fetchAllPosition());
         dispatch(fetchAllRole());
         dispatch(fetchAllUser());
         dispatch(fetchAllDoctor());
         dispatch(fetchAllSchedules());
+        dispatch(fetchAllSpecialties());
+        //
     }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <>
             <ToastContainer
@@ -55,21 +68,29 @@ function App() {
                 {/* normal pages */}
                 <Route element={<DefaultLayout />}>
                     <Route path={routes.HOME} element={<HomePage />} />
+                    <Route path={`${routes.DOCTOR_DETAIL}/:id`} element={<DoctorDetail />} />
+                    <Route path={`${routes.SPECIALTY_DETAIL}/:id`} element={<SpecialtyDetail />} />
+                    <Route path={routes.BOOKING} element={<BookingPage />} />
+                    <Route path={routes.VERIFY_APPOINTMENT} element={<VerifyAppoiment />} />
+                    <Route path={routes.INTRODUCE} element={<IntroducePage />} />
+
                     {/* manage pages */}
                     <Route
-                        path={routes.MANAGE}
+                        path={`${routes.MANAGE}/*`}
                         element={
                             <Secure>
                                 <ManagePage />
                             </Secure>
                         }
-                    >
-                        <Route path={routes.MANAGE_USER} element={<ManageUser />} />
-                        <Route path={routes.MANAGE_ARTICLE} element={<ManageArticle />} />
-                        <Route path={routes.MANAGE_SCHEDULE} element={<ManageSchedulesPage />} />
-                    </Route>
-                    <Route path={`${routes.DOCTOR_DETAIL}/:id`} element={<DoctorDetail />} />
-                    <Route path={routes.VERIFY_APPOINTMENT} element={<VerifyAppoiment />} />
+                    />
+                    {/* <Route
+                        path={routes.MANAGE_DOCTOR}
+                        element={
+                            <Secure>
+                                <ManagePage />
+                            </Secure>
+                        }
+                    /> */}
                 </Route>
                 {/* //login */}
                 <Route path={routes.LOGIN} element={<LoginPage />} />
